@@ -82,7 +82,7 @@ const LandingPageChatWidget = () => {
       setPhone('');
       setEmail('');
       setInputText('');
-      setIsFormVisible(false); 
+      setIsFormVisible(false);
     } catch (error) {
       console.error('Error handling form submission:', error);
       alert('An error occurred, please try again later.');
@@ -90,7 +90,7 @@ const LandingPageChatWidget = () => {
 };
 
   return (
-    <div className='landing-chat-widget-container mobile-visible' style={{ height: 450, width: 320, backgroundColor: colorOfChat, padding: 20, position: 'relative' }}>
+    <div className='landing-chat-widget-container mobile-visible' style={{ height: 350, width: 300, backgroundColor: colorOfChat, padding: 20, position: 'relative' }}>
       {/* Header */}
       <div style={{ position: 'sticky', display: 'flex', gap: 20, alignItems: 'center', backgroundColor: color, width: 338, height: 50, margin: '-20px' }}>
         <img src="./IconStatus.png" alt="" style={{ height: 30, width: 30, marginLeft: 20 }} />
@@ -166,14 +166,14 @@ const LandingPageChatWidget = () => {
       <div style={{ display: 'flex', alignItems: 'center', marginTop: 10, position: 'relative' }}>
         <textarea
           placeholder="Write a message here..."
-          style={{ border: 'none', fontSize: 10, width: 320, height: 28, padding: 5, marginLeft: -16, marginRight: -15 }}
+          style={{ border: 'none', fontSize: 10, width: 420, height: 28, padding: 5, marginRight: -25,marginLeft:-25 }}
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
         />
         <img
           src="./Send.png"
           alt=""
-          style={{ height: 35, width: 35, marginLeft: 10, cursor: 'pointer', position: 'absolute', bottom: 5, right: 30 }}
+          style={{ height: 35, width: 35, marginLeft: 10, cursor: 'pointer', position: 'absolute', bottom: 5,left:280 }}
           onClick={handleSendMessage}
         />
       </div>

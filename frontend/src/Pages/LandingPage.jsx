@@ -44,16 +44,7 @@ const LandingPage = () => {
         <div style={{ position: 'fixed', bottom: 80, right: 30 }}>
       {/* ChatBot Widget */}
       {isOpen && (
-        <div style={{
-          width: 300,
-          height: 400,
-          backgroundColor: '#FFFFFF',
-          boxShadow: '0px 0px 10px rgba(0,0,0,0.2)',
-          borderRadius: 10,
-          marginBottom: 10,
-        
-          overflow: 'hidden'
-        }}>
+        <div>
           <LandingPageChatWidget />
         </div>
       )}
