@@ -3,7 +3,6 @@ import axios from 'axios';
 import moment from 'moment'; 
 import { Link ,useNavigate} from 'react-router-dom'; 
 import * as jwt_decode from 'jwt-decode';
-const token = localStorage.getItem('token');
 import { apiUrl } from '../config';
 
 
@@ -13,17 +12,23 @@ const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
   const [selectedFilter, setSelectedFilter] = useState('all');
+  const [username, setUsername] = useState(null);
 
-  if (token) {
-  try {
-    const decodedToken = jwt_decode(token); 
-    console.log(decodedToken); 
-    const username = decodedToken.username; 
-    console.log(username); 
-  } catch (error) {
-    console.error("Error decoding token:", error);
-  }
-}
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    console.log(token);
+    
+    if (token) {
+      try {
+        const decodedToken = jwt_decode(token); 
+        console.log(decodedToken); 
+        const username = decodedToken.username; // Extract username
+        setUsername(username); // Store username in state
+      } catch (error) {
+        console.error("Error decoding token:", error);
+      }
+    }
+  }, []);
 
  
   useEffect(() => {
@@ -77,6 +82,14 @@ const Dashboard = () => {
     }
   };
 
+  const handleLogout = () => {
+    // Clear user and token from localStorage
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+
+    navigate("/login");
+  };
+
 
   return (
     <div style={{ display: 'flex', gap: 30 }}>
@@ -98,7 +111,7 @@ const Dashboard = () => {
             <button style={{ marginLeft:20, marginTop:10, padding:0, border:'none', background:'none', cursor:'pointer'}}>
                 <img src="./settings.png" alt="" style={{height:20, width:20}} />
             </button>
-            <img src="./profile.png" alt="" style={{height:25, width:25, marginLeft:20, marginTop:400}}/>
+            <img onClick={handleLogout} src="./profile.png" alt="" style={{height:25, width:25, marginLeft:20, marginTop:400,cursor:'pointer'}}/>
         </div>
 
       <div style={{width:'80%'}}>

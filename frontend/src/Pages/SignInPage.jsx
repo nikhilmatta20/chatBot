@@ -27,6 +27,7 @@ const handleLogin = async (e) => {
       const user = response.data.user;
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("token", response.data.token);
+      console.log(response.data.token)
       navigate("/dashboard");
     }
   } catch (error) {
@@ -34,6 +35,7 @@ const handleLogin = async (e) => {
     alert("Invalid username or password");
   }
 };
+
 
   return (
     <div style={{display:'flex'}}>
