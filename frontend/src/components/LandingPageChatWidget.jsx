@@ -7,6 +7,7 @@ const LandingPageChatWidget = () => {
   const { color, colorOfChat ,welcomeText1, welcomeText2 } = useContext(ColorContext);
   
   const [userMessage, setUserMessage] = useState('');
+   const [isFormVisible, setIsFormVisible] = useState(true);
 
 
   const [messages, setMessages] = useState([
@@ -19,7 +20,10 @@ const LandingPageChatWidget = () => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
-  const [isTicketCreated, setIsTicketCreated] = useState(false);  // Track ticket creation
+  const [isTicketCreated, setIsTicketCreated] = useState(false); 
+  
+  
+  
 
   const handleSendMessage = () => {
   if (inputText.trim() === '') return;
@@ -44,33 +48,49 @@ const LandingPageChatWidget = () => {
       return;
     }
 
-    const ticketData = {
-      name,
-      phone,
-      email,
-      message: userMessage,  // Include the user's message with the form data
-    };
-
     try {
-      // Send the data to the backend
-      await axios.post('http://localhost:8000/api/landinguser/submit', ticketData);
-      setMessages([
-        ...messages,
-        { sender: 'bot', text: 'Thank you! Your ticket has been created successfully.' }
-      ]);
-      setIsTicketCreated(true);  // Mark ticket as created
+ 
+      const response = await axios.get(
+        `http://localhost:8000/api/landinguser/messages?email=${email}&phone=${phone}`
+      );
+
+     
+      if (response.data && response.data.messages) {
+        setMessages(response.data.messages); 
+
+        setIsTicketCreated(true);  
+      } else {
+        
+        const ticketData = {
+          name,
+          phone,
+          email,
+          message: userMessage, 
+        };
+
+        await axios.post('http://localhost:8000/api/landinguser/submit', ticketData);
+
+        setMessages([
+          ...messages,
+          { sender: 'bot', text: 'Thank you! Your ticket has been created successfully.' }
+        ]);
+        setIsTicketCreated(true);  
+      }
+
+      // Clear form fields
       setName('');
       setPhone('');
       setEmail('');
       setInputText('');
+      setIsFormVisible(false); 
     } catch (error) {
-      console.error('Error creating ticket:', error);
-      alert('Failed to create ticket');
+      console.error('Error handling form submission:', error);
+      alert('An error occurred, please try again later.');
     }
-  };
+};
 
   return (
-    <div className='landing-chat-widget-container mobile-visible' style={{ height: 450, width: 300, backgroundColor: colorOfChat, padding: 20, position: 'relative' }}>
+    <div className='landing-chat-widget-container mobile-visible' style={{ height: 450, width: 320, backgroundColor: colorOfChat, padding: 20, position: 'relative' }}>
       {/* Header */}
       <div style={{ position: 'sticky', display: 'flex', gap: 20, alignItems: 'center', backgroundColor: color, width: 338, height: 50, margin: '-20px' }}>
         <img src="./IconStatus.png" alt="" style={{ height: 30, width: 30, marginLeft: 20 }} />
@@ -90,7 +110,7 @@ const LandingPageChatWidget = () => {
               marginBottom: 10
             }}
           >
-            {msg.type === 'form' && !isTicketCreated ? (  // Show form only if ticket is not created
+            {msg.type === 'form' && !isTicketCreated && isFormVisible ? (  // Show form only if ticket is not created
               <div style={{ backgroundColor: 'white', borderRadius: 10, padding: 10, width: 190, fontSize: 10 }}>
                 <p>Introduce Yourself</p>
                 <form onSubmit={handleFormSubmit}>
