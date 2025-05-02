@@ -1,0 +1,91 @@
+#root {
+  max-width: 1280px;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ChatBotWidget.css */
+
+
+/* Default styles for desktop: Show elements */
+.right-side {
+  display: block;
+}
+
+.welcometext {
+  display: block;
+}
+
+.navBar {
+  display: block;
+}
+
+/* Mobile Styles (max-width: 768px) */
+@media (max-width: 768px) {
+  /* Hide specific elements on mobile */
+  .right-side {
+    display: none;
+  }
+
+  .welcometext {
+    display: none;
+  }
+
+  .navBar {
+    display: none;
+  }
+
+  .Header{
+    display: none;
+  }
+
+  .Frame-3 {
+    display: none;
+  }
+
+  .Frame-4 {
+    display: none;
+  }
+
+  .Frame-5 {
+    display: none;
+  }
+
+  .main-content {
+    display: none !important; /* Hide all large page content */
+  }
+
+  /* Ensure chatbot and welcome message are visible */
+  .landing-chat-widget-container,
+  .WelcomeMessage {
+    display: block !important;
+  }
+  
+
+  /* Chat widget container adjustment for mobile */
+  .chat-widget-container {
+    width: 100%;   /* Set width to 100% to fit the viewport */
+    height: 100vh; /* Full height of the screen */
+    position: fixed; /* Fix position for mobile view */
+    bottom: 0; /* Align it to the bottom */
+    left: 0; /* Align it to the left */
+    right: 0; /* Align it to the right */
+    background-color: #fff; /* Optional: You can add a background */
+    border-radius: 0; /* Full-width without rounding corners */
+    z-index: 9999; /* Make sure it's on top */
+  }
+
+   .mobile-visible {
+    display: block !important;
+    width: 100vw;
+    height: 100vh;
+    overflow-y: auto;
+    background-color: white; /* Optional background */
+    padding: 10px;
+  }
+  /* Hide the nav bar on mobile */
+  #navBar {
+    display: none;
+  }
+}
