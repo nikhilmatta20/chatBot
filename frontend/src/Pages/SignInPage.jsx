@@ -22,6 +22,8 @@ const handleLogin = async (e) => {
 
    if (response.data.token) {
       // Store the user data and token in localStorage
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
       const user = response.data.user;
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("token", response.data.token);
