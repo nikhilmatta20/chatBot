@@ -15,8 +15,6 @@ const LandingPageChatWidget = () => {
     { sender: 'bot', text: welcomeText2},
   ]);
   const [inputText, setInputText] = useState('');
-  
-  // New states for form fields
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
@@ -41,26 +39,25 @@ const LandingPageChatWidget = () => {
 const handleFormSubmit = async (e) => {
   e.preventDefault();
 
-  // Check if all fields are filled
+
   if (!name || !phone || !email) {
     alert("Please fill out all fields.");
     return;
   }
 
   try {
-    // Step 1: Submit the user data to create a new user (if they don't exist yet)
+    
     const ticketData = {
       name,
       phone,
       email,
-      message: userMessage, // User's initial message
+      message: userMessage, 
     };
 
-    // Submit the ticket data (this should create the user if they don't exist)
     const response = await axios.post('http://localhost:8000/api/landinguser/submit', ticketData);
 
     if (response.status === 201) {
-      // Set ticket creation message after form submission
+      
       setMessages([
         ...messages,
         { sender: 'bot', text: 'Thank you! Your ticket has been created successfully.' }
@@ -68,24 +65,24 @@ const handleFormSubmit = async (e) => {
       setIsTicketCreated(true);
     }
 
-    // Now trigger the second step of re-fetching messages
+
     setTimeout(async () => {
       const userMessagesResponse = await axios.get(
         `http://localhost:8000/api/landinguser/messages?email=${email}&phone=${phone}`
       );
 
       if (userMessagesResponse.data && userMessagesResponse.data.messages) {
-        // After the new user is created, now render the messages
+       
         setMessages(userMessagesResponse.data.messages);
       }
 
-      // Clear form fields after submission
+      
       setName('');
       setPhone('');
       setEmail('');
       setInputText('');
       setIsFormVisible(false);
-    }, 1000); // Delay to simulate the re-fetch of messages after the user is created
+    }, 1000);
 
   } catch (error) {
     console.error('Error handling form submission:', error);
@@ -96,13 +93,13 @@ const handleFormSubmit = async (e) => {
 
   return (
     <div className='landing-chat-widget-container mobile-visible' style={{ height: 350, width: 300, backgroundColor: colorOfChat, padding: 20, position: 'relative' }}>
-      {/* Header */}
+     
       <div style={{ position: 'sticky', display: 'flex', gap: 20, alignItems: 'center', backgroundColor: color, width: 338, height: 50, margin: '-20px' }}>
         <img src="./IconStatus.png" alt="" style={{ height: 30, width: 30, marginLeft: 20 }} />
         <h5 style={{ color: 'white' }}>Hubly</h5>
       </div>
 
-      {/* Messages */}
+  
       <div style={{ height: 300, overflowY: 'auto', padding: '8px 0' }}>
         {messages.map((msg, idx) => (
           <div
