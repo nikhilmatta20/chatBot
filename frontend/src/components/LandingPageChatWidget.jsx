@@ -34,60 +34,65 @@ const LandingPageChatWidget = () => {
     { sender: 'bot', type: 'form' }
   ];
   setMessages(newMessages);
-  setUserMessage(inputText);  // ✅ Save the user's first message
+  setUserMessage(inputText); 
   setInputText('');
 };
 
+const handleFormSubmit = async (e) => {
+  e.preventDefault();
 
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
+  // Check if all fields are filled
+  if (!name || !phone || !email) {
+    alert("Please fill out all fields.");
+    return;
+  }
 
-    // Check if all fields are filled
-    if (!name || !phone || !email) {
-      alert("Please fill out all fields.");
-      return;
+  try {
+    // Step 1: Submit the user data to create a new user (if they don't exist yet)
+    const ticketData = {
+      name,
+      phone,
+      email,
+      message: userMessage, // User's initial message
+    };
+
+    // Submit the ticket data (this should create the user if they don't exist)
+    const response = await axios.post('http://localhost:8000/api/landinguser/submit', ticketData);
+
+    if (response.status === 201) {
+      // Set ticket creation message after form submission
+      setMessages([
+        ...messages,
+        { sender: 'bot', text: 'Thank you! Your ticket has been created successfully.' }
+      ]);
+      setIsTicketCreated(true);
     }
 
-    try {
- 
-      const response = await axios.get(
+    // Now trigger the second step of re-fetching messages
+    setTimeout(async () => {
+      const userMessagesResponse = await axios.get(
         `http://localhost:8000/api/landinguser/messages?email=${email}&phone=${phone}`
       );
 
-     
-      if (response.data && response.data.messages) {
-        setMessages(response.data.messages); 
-
-        setIsTicketCreated(true);  
-      } else {
-        
-        const ticketData = {
-          name,
-          phone,
-          email,
-          message: userMessage, 
-        };
-
-        await axios.post('http://localhost:8000/api/landinguser/submit', ticketData);
-
-        setMessages([
-          ...messages,
-          { sender: 'bot', text: 'Thank you! Your ticket has been created successfully.' }
-        ]);
-        setIsTicketCreated(true);  
+      if (userMessagesResponse.data && userMessagesResponse.data.messages) {
+        // After the new user is created, now render the messages
+        setMessages(userMessagesResponse.data.messages);
       }
 
-      // Clear form fields
+      // Clear form fields after submission
       setName('');
       setPhone('');
       setEmail('');
       setInputText('');
       setIsFormVisible(false);
-    } catch (error) {
-      console.error('Error handling form submission:', error);
-      alert('An error occurred, please try again later.');
-    }
+    }, 1000); // Delay to simulate the re-fetch of messages after the user is created
+
+  } catch (error) {
+    console.error('Error handling form submission:', error);
+    alert('An error occurred, please try again later.');
+  }
 };
+
 
   return (
     <div className='landing-chat-widget-container mobile-visible' style={{ height: 350, width: 300, backgroundColor: colorOfChat, padding: 20, position: 'relative' }}>
