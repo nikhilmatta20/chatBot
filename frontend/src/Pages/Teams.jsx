@@ -107,7 +107,7 @@ const handleSave = async (e) => {
   try {
     // Make the API request to delete the teammate
     const response = await axios.delete(
-      `${apiUrl}/api/auth/delete/${currentUserId}`,
+      `${apiUrl}/api/auth/delete/${userId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,  // Add token in Authorization header
@@ -116,7 +116,7 @@ const handleSave = async (e) => {
     );
 
     if (response.status === 200) {
-        setMembers(members.filter((member) => member._id !== currentUserId));
+        setMembers(members.filter((member) => member._id !== userId));
         alert('User deleted successfully');
       }
       setShowDeleteTeammate(false);
@@ -409,7 +409,7 @@ const handleSave = async (e) => {
                       Cancel
                     </button>
                     <button
-                      onClick={deleteTeammate}
+                      onClick={deleteTeammate(currentUserId)}
                       style={{
                         color: 'white',
                         backgroundColor: '#184E7F',

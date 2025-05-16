@@ -10,7 +10,6 @@ const authenticate = (req, res, next) => {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-
   const token = authHeader.split(" ")[1];
 
   try {
