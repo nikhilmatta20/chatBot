@@ -105,7 +105,7 @@ const Dashboard = () => {
             <button onClick={() => navigate('/chatbot')} style={{marginLeft:20, marginTop:10, padding:0, border:'none', background:'none', cursor:'pointer'}}>
                 <img src="./chatRobot.png" alt="" style={{height:20, width:20}} />
             </button>
-            <button onClick={() => navigate('/teams')} style={{ marginLeft:20, marginTop:10, padding:0, border:'none', background:'none', cursor:'pointer'}}>
+            <button onClick={() => (window.location.href='/teams')} style={{ marginLeft:20, marginTop:10, padding:0, border:'none', background:'none', cursor:'pointer'}}>
                 <img src="./team.png" alt="" style={{height:20, width:20}} />
             </button>
             <button style={{ marginLeft:20, marginTop:10, padding:0, border:'none', background:'none', cursor:'pointer'}}>
